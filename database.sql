@@ -13,9 +13,15 @@
 CREATE DATABASE IF NOT EXISTS chama_manager
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
+CREATE TABLE users IF NOT EXISTS
+id        INT AUTO_INCREMENT PRIMARY KEY,
+  username  VARCHAR(50) NOT NULL UNIQUE,
+  password  VARCHAR(255) NOT NULL;
+  
 
 -- (B) use it for everything below
 USE chama_manager;
+///creating the users table for sign up and sign in 
 
 
 -- ------------------------------------------------------------

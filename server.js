@@ -45,7 +45,32 @@ pool.getConnection((err,connection)=>{
 
     connection.release() //once a connection is successful to avoid other connections 
 })
+app.get('/signup',(req,res)=>{  //we are senfgnthe sign up .ejs file to the user 
+    res.render('signup',{error:null})
+})
+//to send the user data once the sign up page has been populated by the user 
+app.post('/signup',(req,res)=>{
+    //we have retireved user data 
+   const username=req.body.username
+   const password=req.body.password
 
+   if(!username && !password){
+    return res.render('signup',{error:'please fill in all the details '})
+   } 
+   let hashedPassword=bcrypt.hash(password,10)
+
+   //defining an sql staement that will insert into our users table 
+   let sql=`INSERT INTO users (username,password) VALUES(?,?)`//ACCEPT THE REQ.BODY 
+
+   //USE THE QUERY METHOD TO PUSH THE REQ.BODY OT OUR DB (WE INPUT THE HASHED PASSWORD IN THE ARRAY OBJECT )
+
+   pool.query(sql,[username,hashedPassword],(error,result)=>{
+    if(err){
+        res.render('signup',{error:'username already taken '})
+    }
+   })
+
+})
 
 /* //some routes
 app.use('/',require('./routes/dashboard'))
